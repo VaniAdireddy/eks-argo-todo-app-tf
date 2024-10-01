@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eks-argo-todo-app
+  namespace: argocd
+spec:
+  project: default
+
+  # The repository containing the Kubernetes manifests
+  source:
+    repoURL: 'https://github.com/VaniAdireddy/eks-argo-todo-app-kube-manifest.git'
+    targetRevision: HEAD
+    path: manifest
+
+  # The destination cluster and namespace where the application will be deployed
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: myapp
+
+  # Sync policy for automated sync (optional)
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
